@@ -1,6 +1,11 @@
 import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
+import { router } from 'expo-router';
 
 export default function Home() {
+  const handleContinue = () => {
+    router.push('/wallet');
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.contentContainer}>
@@ -14,7 +19,7 @@ export default function Home() {
       
       <View style={styles.footer}>
         <Text style={styles.poweredBy}>Powered by Bank of Baroda</Text>
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity style={styles.button} onPress={handleContinue}>
           <Text style={styles.buttonText}>Continue</Text>
         </TouchableOpacity>
       </View>
