@@ -1,6 +1,7 @@
 import { View, Text, StyleSheet, TouchableOpacity, Image, Dimensions } from 'react-native';
 import { router } from 'expo-router';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import QRCode from 'react-native-qrcode-svg';
 
 const { width } = Dimensions.get('window');
 
@@ -49,6 +50,20 @@ export default function ProfileDrawer({ isVisible, onClose, privateKey, publicKe
             style={styles.profileIcon}
           />
           <Text style={styles.userName}>Chetan Mittal</Text>
+          
+          {/* QR Code Section */}
+          <View style={styles.qrContainer}>
+            <Text style={styles.qrLabel}>Public Key QR Code</Text>
+            <View style={styles.qrCode}>
+              <QRCode
+                value={publicKey || ''}
+                size={150}
+                backgroundColor="white"
+                color="black"
+              />
+            </View>
+            <Text style={styles.qrHint}>Scan to get the public key</Text>
+          </View>
         </View>
 
         <View style={styles.menuItems}>
@@ -122,6 +137,31 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
     color: '#333',
+    marginBottom: 20,
+  },
+  qrContainer: {
+    alignItems: 'center',
+    marginBottom: 30,
+    padding: 15,
+    backgroundColor: '#f8f8f8',
+    borderRadius: 12,
+    width: '100%',
+  },
+  qrLabel: {
+    fontSize: 16,
+    color: '#666',
+    marginBottom: 10,
+  },
+  qrCode: {
+    padding: 10,
+    backgroundColor: 'white',
+    borderRadius: 8,
+    marginBottom: 8,
+  },
+  qrHint: {
+    fontSize: 12,
+    color: '#999',
+    textAlign: 'center',
   },
   menuItems: {
     marginTop: 20,
