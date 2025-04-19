@@ -1,9 +1,14 @@
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 
 export default function Home() {
   return (
     <View style={styles.container}>
       <View style={styles.contentContainer}>
+        <Image 
+          source={require('../assets/images/e-rupee.jpg')}
+          style={styles.logo}
+          resizeMode="contain"
+        />
         <Text style={styles.title}>India's Central Bank Digital Currency</Text>
       </View>
       
@@ -27,6 +32,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     paddingHorizontal: 20,
+  },
+  logo: {
+    width: 200,
+    height: 200,
+    marginBottom: 30,
   },
   title: {
     fontSize: 28,
