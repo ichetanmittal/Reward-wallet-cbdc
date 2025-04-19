@@ -1,6 +1,7 @@
 import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { router } from 'expo-router';
 import * as Crypto from 'expo-crypto';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function CreateWallet() {
   const handleCreateWallet = async () => {
@@ -16,6 +17,11 @@ export default function CreateWallet() {
         Crypto.CryptoDigestAlgorithm.SHA256,
         privateKey
       );
+
+      // Store wallet information
+      await AsyncStorage.setItem('walletExists', 'true');
+      await AsyncStorage.setItem('privateKey', privateKey);
+      await AsyncStorage.setItem('publicKey', publicKey);
 
       // Navigate to wallet page with the keys
       router.push({

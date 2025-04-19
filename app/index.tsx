@@ -1,9 +1,40 @@
 import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { router } from 'expo-router';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useEffect, useState } from 'react';
 
 export default function Home() {
-  const handleContinue = () => {
-    router.push('/create-wallet');
+  const [hasWallet, setHasWallet] = useState(false);
+
+  useEffect(() => {
+    checkExistingWallet();
+  }, []);
+
+  const checkExistingWallet = async () => {
+    try {
+      const walletExists = await AsyncStorage.getItem('walletExists');
+      setHasWallet(walletExists === 'true');
+    } catch (error) {
+      console.error('Error checking wallet:', error);
+    }
+  };
+
+  const handleContinue = async () => {
+    if (hasWallet) {
+      // If wallet exists, get the keys and navigate directly to wallet
+      const privateKey = await AsyncStorage.getItem('privateKey');
+      const publicKey = await AsyncStorage.getItem('publicKey');
+      router.push({
+        pathname: '/wallet',
+        params: {
+          privateKey,
+          publicKey
+        }
+      });
+    } else {
+      // If no wallet exists, go to create wallet page
+      router.push('/create-wallet');
+    }
   };
 
   return (
@@ -20,7 +51,9 @@ export default function Home() {
       <View style={styles.footer}>
         <Text style={styles.poweredBy}>Powered by Bank of Baroda</Text>
         <TouchableOpacity style={styles.button} onPress={handleContinue}>
-          <Text style={styles.buttonText}>Continue</Text>
+          <Text style={styles.buttonText}>
+            {hasWallet ? 'Open Wallet' : 'Continue'}
+          </Text>
         </TouchableOpacity>
       </View>
     </View>

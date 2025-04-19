@@ -1,9 +1,12 @@
 import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { useLocalSearchParams, router } from 'expo-router';
+import { useState } from 'react';
+import ProfileDrawer from './components/ProfileDrawer';
 
 export default function WalletScreen() {
   const { privateKey, publicKey } = useLocalSearchParams();
+  const [isDrawerVisible, setIsDrawerVisible] = useState(false);
 
   const handleRewardsWallet = () => {
     router.push('/rewards-wallet');
@@ -13,7 +16,10 @@ export default function WalletScreen() {
     <View style={styles.container}>
       {/* Header */}
       <View style={styles.header}>
-        <TouchableOpacity style={styles.profileButton}>
+        <TouchableOpacity 
+          style={styles.profileButton}
+          onPress={() => setIsDrawerVisible(true)}
+        >
           <Image 
             source={require('../assets/images/person.png')} 
             style={styles.profileIcon}
@@ -29,6 +35,12 @@ export default function WalletScreen() {
           </TouchableOpacity>
         </View>
       </View>
+
+      {/* Profile Drawer */}
+      <ProfileDrawer 
+        isVisible={isDrawerVisible}
+        onClose={() => setIsDrawerVisible(false)}
+      />
 
       {/* Digital Rupee Card */}
       <View style={styles.cardContainer}>
