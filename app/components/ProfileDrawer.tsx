@@ -7,9 +7,11 @@ const { width } = Dimensions.get('window');
 interface ProfileDrawerProps {
   isVisible: boolean;
   onClose: () => void;
+  privateKey?: string;
+  publicKey?: string;
 }
 
-export default function ProfileDrawer({ isVisible, onClose }: ProfileDrawerProps) {
+export default function ProfileDrawer({ isVisible, onClose, privateKey, publicKey }: ProfileDrawerProps) {
   const handleDeregisterWallet = async () => {
     try {
       // Clear wallet data
@@ -25,8 +27,14 @@ export default function ProfileDrawer({ isVisible, onClose }: ProfileDrawerProps
   };
 
   const handleWalletDetails = () => {
-    // TODO: Implement wallet details view
     onClose();
+    router.push({
+      pathname: '/wallet-details',
+      params: {
+        privateKey,
+        publicKey
+      }
+    });
   };
 
   if (!isVisible) return null;

@@ -40,6 +40,8 @@ export default function WalletScreen() {
       <ProfileDrawer 
         isVisible={isDrawerVisible}
         onClose={() => setIsDrawerVisible(false)}
+        privateKey={privateKey as string}
+        publicKey={publicKey as string}
       />
 
       {/* Digital Rupee Card */}
@@ -89,7 +91,7 @@ export default function WalletScreen() {
         </View>
       </View>
 
-      {/* Keys Display */}
+      {/* Keys Display
       <View style={styles.keysContainer}>
         <View style={styles.keySection}>
           <Text style={styles.keyLabel}>Public Key:</Text>
@@ -99,7 +101,7 @@ export default function WalletScreen() {
           <Text style={styles.keyLabel}>Private Key:</Text>
           <Text style={styles.keyValue} numberOfLines={1}>{privateKey}</Text>
         </View>
-      </View>
+      </View> */}
 
       {/* Rewards Wallet Button */}
       <TouchableOpacity 
