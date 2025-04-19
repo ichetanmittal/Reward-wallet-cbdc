@@ -1,9 +1,14 @@
-import { View, Text, StyleSheet, TouchableOpacity, Image, ScrollView, Dimensions } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
-
-const { width } = Dimensions.get('window');
+import { useLocalSearchParams, router } from 'expo-router';
 
 export default function WalletScreen() {
+  const { privateKey, publicKey } = useLocalSearchParams();
+
+  const handleRewardsWallet = () => {
+    router.push('/rewards-wallet');
+  };
+
   return (
     <View style={styles.container}>
       {/* Header */}
@@ -25,118 +30,73 @@ export default function WalletScreen() {
         </View>
       </View>
 
-      <ScrollView 
-        horizontal 
-        pagingEnabled 
-        showsHorizontalScrollIndicator={false}
-        style={styles.scrollView}
+      {/* Digital Rupee Card */}
+      <View style={styles.cardContainer}>
+        <View style={[styles.card, { backgroundColor: '#D35400' }]}>
+          <View style={styles.cardHeader}>
+            <View>
+              <Text style={styles.balanceLabel}>Current Balance</Text>
+              <Text style={styles.walletTitle}>Digital Rupee Wallet</Text>
+            </View>
+            <TouchableOpacity style={styles.viewWalletButton}>
+              <Text style={[styles.viewWalletText, { color: '#D35400' }]}>View Wallet</Text>
+            </TouchableOpacity>
+          </View>
+
+          {/* Action Buttons */}
+          <View style={styles.actionButtons}>
+            <TouchableOpacity style={[styles.actionButton, { backgroundColor: '#E67E22' }]}>
+              <Image 
+                source={require('../assets/images/Creditcard.png')} 
+                style={styles.actionIcon}
+              />
+              <Text style={styles.actionText}>Send</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={[styles.actionButton, { backgroundColor: '#E67E22' }]}>
+              <Image 
+                source={require('../assets/images/Download.png')} 
+                style={styles.actionIcon}
+              />
+              <Text style={styles.actionText}>Collect</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={[styles.actionButton, { backgroundColor: '#E67E22' }]}>
+              <Image 
+                source={require('../assets/images/Download.png')} 
+                style={styles.actionIcon}
+              />
+              <Text style={styles.actionText}>Load</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={[styles.actionButton, { backgroundColor: '#E67E22' }]}>
+              <Image 
+                source={require('../assets/images/Download.png')} 
+                style={styles.actionIcon}
+              />
+              <Text style={styles.actionText}>Redeem</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </View>
+
+      {/* Keys Display */}
+      <View style={styles.keysContainer}>
+        <View style={styles.keySection}>
+          <Text style={styles.keyLabel}>Public Key:</Text>
+          <Text style={styles.keyValue} numberOfLines={1}>{publicKey}</Text>
+        </View>
+        <View style={styles.keySection}>
+          <Text style={styles.keyLabel}>Private Key:</Text>
+          <Text style={styles.keyValue} numberOfLines={1}>{privateKey}</Text>
+        </View>
+      </View>
+
+      {/* Rewards Wallet Button */}
+      <TouchableOpacity 
+        style={styles.rewardsButton} 
+        onPress={handleRewardsWallet}
       >
-        {/* Digital Rupee Card */}
-        <View style={styles.page}>
-          <View style={[styles.card, { backgroundColor: '#D35400' }]}>
-            <View style={styles.cardHeader}>
-              <View>
-                <Text style={styles.balanceLabel}>Current Balance</Text>
-                {/* <Text style={styles.bankName}>Reserve Bank of India</Text> */}
-                <Text style={styles.walletTitle}>Digital Rupee Wallet</Text>
-              </View>
-              <TouchableOpacity style={styles.viewWalletButton}>
-                <Text style={[styles.viewWalletText, { color: '#D35400' }]}>View Wallet</Text>
-              </TouchableOpacity>
-            </View>
+        <Text style={styles.rewardsButtonText}>View Rewards Wallet</Text>
+      </TouchableOpacity>
 
-            {/* Action Buttons */}
-            <View style={styles.actionButtons}>
-              <TouchableOpacity style={[styles.actionButton, { backgroundColor: '#E67E22' }]}>
-                <Image 
-                  source={require('../assets/images/Creditcard.png')} 
-                  style={styles.actionIcon}
-                />
-                <Text style={styles.actionText}>Send</Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={[styles.actionButton, { backgroundColor: '#E67E22' }]}>
-                <Image 
-                  source={require('../assets/images/Download.png')} 
-                  style={styles.actionIcon}
-                />
-                <Text style={styles.actionText}>Collect</Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={[styles.actionButton, { backgroundColor: '#E67E22' }]}>
-                <Image 
-                  source={require('../assets/images/Download.png')} 
-                  style={styles.actionIcon}
-                />
-                <Text style={styles.actionText}>Load</Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={[styles.actionButton, { backgroundColor: '#E67E22' }]}>
-                <Image 
-                  source={require('../assets/images/Download.png')} 
-                  style={styles.actionIcon}
-                />
-                <Text style={styles.actionText}>Redeem</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-        </View>
-
-        {/* Rewards Card */}
-        <View style={styles.page}>
-          <View style={[styles.card, { backgroundColor: '#2E7D32' }]}>
-            <View style={styles.cardHeader}>
-              <View>
-                <Text style={styles.balanceLabel}>Available Points</Text>
-                <Text style={styles.walletTitle}>Rewards Wallet</Text>
-              </View>
-              <TouchableOpacity style={styles.viewWalletButton}>
-                <Text style={[styles.viewWalletText, { color: '#2E7D32' }]}>View Rewards</Text>
-              </TouchableOpacity>
-            </View>
-
-            {/* Action Buttons */}
-            <View style={styles.actionButtons}>
-              <TouchableOpacity style={[styles.actionButton, { backgroundColor: '#388E3C' }]}>
-                <Image 
-                  source={require('../assets/images/Creditcard.png')} 
-                  style={styles.actionIcon}
-                />
-                <Text style={styles.actionText}>Earn</Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={[styles.actionButton, { backgroundColor: '#388E3C' }]}>
-                <Image 
-                  source={require('../assets/images/Download.png')} 
-                  style={styles.actionIcon}
-                />
-                <Text style={styles.actionText}>Redeem</Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={[styles.actionButton, { backgroundColor: '#388E3C' }]}>
-                <Image 
-                  source={require('../assets/images/Download.png')} 
-                  style={styles.actionIcon}
-                />
-                <Text style={styles.actionText}>History</Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={[styles.actionButton, { backgroundColor: '#388E3C' }]}>
-                <Image 
-                  source={require('../assets/images/Download.png')} 
-                  style={styles.actionIcon}
-                />
-                <Text style={styles.actionText}>Partners</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-        </View>
-      </ScrollView>
-      {/* Bank Logos */}
-      {/* <View style={styles.bankLogos}>
-        <Image 
-          source={require('../assets/images/rbi-logo.png')} 
-          style={styles.bankLogo}
-        />
-        <Image 
-          source={require('../assets/images/.png')} 
-          style={styles.bankLogo}
-        />
-      </View> */}
       <StatusBar style="auto" />
     </View>
   );
@@ -186,11 +146,7 @@ const styles = StyleSheet.create({
     width: 24,
     height: 24,
   },
-  scrollView: {
-    flex: 1,
-  },
-  page: {
-    width: width,
+  cardContainer: {
     paddingHorizontal: 20,
   },
   card: {
@@ -213,11 +169,6 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 16,
     marginBottom: 10,
-  },
-  bankName: {
-    color: 'white',
-    fontSize: 14,
-    marginBottom: 5,
   },
   walletTitle: {
     color: 'white',
@@ -255,16 +206,42 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontWeight: '500',
   },
-  bankLogos: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    gap: 20,
-    marginTop: 20,
+  keysContainer: {
+    backgroundColor: 'white',
+    padding: 15,
+    margin: 20,
+    borderRadius: 10,
+    elevation: 3,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.2,
+    shadowRadius: 2,
   },
-  bankLogo: {
-    width: 40,
-    height: 40,
-    resizeMode: 'contain',
+  keySection: {
+    marginBottom: 10,
+  },
+  keyLabel: {
+    color: '#333',
+    fontSize: 14,
+    fontWeight: '600',
+    marginBottom: 5,
+  },
+  keyValue: {
+    color: '#666',
+    fontSize: 12,
+  },
+  rewardsButton: {
+    backgroundColor: '#2E7D32',
+    paddingHorizontal: 20,
+    paddingVertical: 12,
+    borderRadius: 25,
+    marginHorizontal: 20,
+    marginBottom: 20,
+    alignItems: 'center',
+  },
+  rewardsButtonText: {
+    color: 'white',
+    fontSize: 16,
+    fontWeight: '600',
   },
 }); 

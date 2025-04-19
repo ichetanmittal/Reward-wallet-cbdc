@@ -3,7 +3,7 @@ import { router } from 'expo-router';
 
 export default function Home() {
   const handleContinue = () => {
-    router.push('/wallet');
+    router.push('/create-wallet');
   };
 
   return (
