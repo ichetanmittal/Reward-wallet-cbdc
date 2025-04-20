@@ -27,11 +27,11 @@ export default function WalletScreen() {
         </TouchableOpacity>
         <Text style={styles.headerTitle}>Chetan Mittal</Text>
         <View style={styles.headerRight}>
-          <TouchableOpacity style={styles.iconButton}>
-            <Image 
-              source={require('../assets/images/Logout.png')} 
-              style={styles.icon}
-            />
+          <TouchableOpacity 
+            style={styles.rewardsButton} 
+            onPress={handleRewardsWallet}
+          >
+            <Text style={styles.rewardsButtonText}>View Rewards</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -50,44 +50,58 @@ export default function WalletScreen() {
           <View style={styles.cardHeader}>
             <View>
               <Text style={styles.balanceLabel}>Current Balance</Text>
-              <Text style={styles.walletTitle}>Digital Rupee Wallet</Text>
+              
             </View>
             <TouchableOpacity style={styles.viewWalletButton}>
               <Text style={[styles.viewWalletText, { color: '#D35400' }]}>View Wallet</Text>
             </TouchableOpacity>
           </View>
+        </View>
+      </View>
 
-          {/* Action Buttons */}
-          <View style={styles.actionButtons}>
-            <TouchableOpacity style={[styles.actionButton, { backgroundColor: '#E67E22' }]}>
-              <Image 
-                source={require('../assets/images/Creditcard.png')} 
-                style={styles.actionIcon}
-              />
-              <Text style={styles.actionText}>Send</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={[styles.actionButton, { backgroundColor: '#E67E22' }]}>
-              <Image 
-                source={require('../assets/images/Download.png')} 
-                style={styles.actionIcon}
-              />
-              <Text style={styles.actionText}>Collect</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={[styles.actionButton, { backgroundColor: '#E67E22' }]}>
-              <Image 
-                source={require('../assets/images/Download.png')} 
-                style={styles.actionIcon}
-              />
-              <Text style={styles.actionText}>Load</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={[styles.actionButton, { backgroundColor: '#E67E22' }]}>
-              <Image 
-                source={require('../assets/images/Download.png')} 
-                style={styles.actionIcon}
-              />
-              <Text style={styles.actionText}>Redeem</Text>
-            </TouchableOpacity>
-          </View>
+      {/* RBI and Wallet Title */}
+      <View style={styles.walletInfoContainer}>
+        <View style={styles.walletTextContainer}>
+          <Text style={styles.rbiText}>Reserve Bank of India</Text>
+          <Text style={styles.walletTypeText}>Digital Rupee Wallet</Text>
+        </View>
+        <Image 
+          source={require('../assets/images/rbi.jpg')}
+          style={styles.rbiLogo}
+        />
+      </View>
+
+      {/* Action Buttons */}
+      <View style={styles.actionButtonsContainer}>
+        <View style={styles.actionButtons}>
+          <TouchableOpacity style={[styles.actionButton, { backgroundColor: '#E67E22' }]}>
+            <Image 
+              source={require('../assets/images/Externallink.png')} 
+              style={styles.actionIcon}
+            />
+            <Text style={styles.actionText}>Send</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={[styles.actionButton, { backgroundColor: '#E67E22' }]}>
+            <Image 
+              source={require('../assets/images/Download.png')} 
+              style={styles.actionIcon}
+            />
+            <Text style={styles.actionText}>Collect</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={[styles.actionButton, { backgroundColor: '#E67E22' }]}>
+            <Image 
+              source={require('../assets/images/Creditcard.png')} 
+              style={styles.actionIcon}
+            />
+            <Text style={styles.actionText}>Load</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={[styles.actionButton, { backgroundColor: '#E67E22' }]}>
+            <Image 
+              source={require('../assets/images/Download.png')} 
+              style={styles.actionIcon}
+            />
+            <Text style={styles.actionText}>Redeem</Text>
+          </TouchableOpacity>
         </View>
       </View>
 
@@ -103,14 +117,6 @@ export default function WalletScreen() {
         </View>
       </View> */}
 
-      {/* Rewards Wallet Button */}
-      <TouchableOpacity 
-        style={styles.rewardsButton} 
-        onPress={handleRewardsWallet}
-      >
-        <Text style={styles.rewardsButtonText}>View Rewards Wallet</Text>
-      </TouchableOpacity>
-
       <StatusBar style="auto" />
     </View>
   );
@@ -119,7 +125,7 @@ export default function WalletScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FDF8F5',
+    backgroundColor: '#FFFFFF',
   },
   header: {
     flexDirection: 'row',
@@ -150,21 +156,22 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     gap: 15,
   },
-  iconButton: {
-    width: 40,
-    height: 40,
-    justifyContent: 'center',
-    alignItems: 'center',
+  rewardsButton: {
+    backgroundColor: '#2E7D32',
+    paddingHorizontal: 15,
+    paddingVertical: 8,
+    borderRadius: 20,
   },
-  icon: {
-    width: 24,
-    height: 24,
+  rewardsButtonText: {
+    color: 'white',
+    fontSize: 14,
+    fontWeight: '600',
   },
   cardContainer: {
     paddingHorizontal: 20,
   },
   card: {
-    height: 250,
+    height: 150,
     borderRadius: 20,
     padding: 20,
     elevation: 5,
@@ -198,10 +205,13 @@ const styles = StyleSheet.create({
   viewWalletText: {
     fontWeight: '600',
   },
+  actionButtonsContainer: {
+    paddingHorizontal: 20,
+    marginTop: 20,
+  },
   actionButtons: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginTop: 20,
   },
   actionButton: {
     alignItems: 'center',
@@ -244,18 +254,30 @@ const styles = StyleSheet.create({
     color: '#666',
     fontSize: 12,
   },
-  rewardsButton: {
-    backgroundColor: '#2E7D32',
+  walletInfoContainer: {
     paddingHorizontal: 20,
-    paddingVertical: 12,
-    borderRadius: 25,
-    marginHorizontal: 20,
-    marginBottom: 20,
+    marginTop: 20,
+    marginBottom: 10,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     alignItems: 'center',
   },
-  rewardsButtonText: {
-    color: 'white',
+  walletTextContainer: {
+    flex: 1,
+  },
+  rbiText: {
     fontSize: 16,
-    fontWeight: '600',
+    color: '#666',
+    marginBottom: 4,
+  },
+  walletTypeText: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: '#333',
+  },
+  rbiLogo: {
+    width: 60,
+    height: 60,
+    marginLeft: 15,
   },
 }); 
