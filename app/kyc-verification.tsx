@@ -60,9 +60,13 @@ export default function KYCVerificationScreen() {
     setIsVerifying(true);
     try {
       await kycService.verifyOTP(aadhaarNumber, phoneNumber, otp);
+      console.log('Verified phone number:', phoneNumber); // Debug log
       router.push({
         pathname: '/create-wallet',
-        params: { kycVerified: 'true' }
+        params: { 
+          kycVerified: 'true',
+          verifiedPhone: phoneNumber 
+        }
       });
     } catch (error) {
       Alert.alert('Error', 'Invalid OTP. Please try again.');

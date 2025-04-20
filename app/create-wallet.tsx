@@ -4,7 +4,9 @@ import * as Crypto from 'expo-crypto';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function CreateWallet() {
-  const { kycVerified } = useLocalSearchParams();
+  const { kycVerified, verifiedPhone } = useLocalSearchParams();
+
+  console.log('Received phone from KYC:', verifiedPhone); // Debug log
 
   const handleCreateWallet = async () => {
     try {
@@ -24,13 +26,18 @@ export default function CreateWallet() {
       await AsyncStorage.setItem('walletExists', 'true');
       await AsyncStorage.setItem('privateKey', privateKey);
       await AsyncStorage.setItem('publicKey', publicKey);
+      if (verifiedPhone) {
+        await AsyncStorage.setItem('phoneNumber', verifiedPhone as string);
+        console.log('Storing phone number:', verifiedPhone); // Debug log
+      }
 
-      // Navigate to wallet page with the keys
+      // Navigate to wallet page with the keys and phone number
       router.push({
         pathname: '/wallet',
         params: {
           privateKey,
-          publicKey
+          publicKey,
+          phoneNumber: verifiedPhone
         }
       });
     } catch (error) {

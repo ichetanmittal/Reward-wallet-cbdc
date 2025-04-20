@@ -1,9 +1,26 @@
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
 import { useLocalSearchParams, router } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
+import { useEffect, useState } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function WalletDetails() {
   const { privateKey, publicKey } = useLocalSearchParams();
+  const [phoneNumber, setPhoneNumber] = useState<string>('');
+
+  useEffect(() => {
+    const loadPhoneNumber = async () => {
+      try {
+        const storedPhone = await AsyncStorage.getItem('phoneNumber');
+        if (storedPhone) {
+          setPhoneNumber(storedPhone);
+        }
+      } catch (error) {
+        console.error('Error reading phone from storage:', error);
+      }
+    };
+    loadPhoneNumber();
+  }, []);
 
   const handleBack = () => {
     router.back();
@@ -23,6 +40,11 @@ export default function WalletDetails() {
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Digital Rupee Wallet</Text>
           
+          <View style={styles.keyContainer}>
+            <Text style={styles.keyLabel}>Phone Number</Text>
+            <Text style={styles.keyValue} selectable>{phoneNumber || 'Not available'}</Text>
+          </View>
+
           <View style={styles.keyContainer}>
             <Text style={styles.keyLabel}>Public Key</Text>
             <Text style={styles.keyValue} selectable>{publicKey}</Text>
