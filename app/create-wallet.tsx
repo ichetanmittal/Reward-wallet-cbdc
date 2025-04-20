@@ -1,9 +1,11 @@
 import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
-import { router } from 'expo-router';
+import { router, useLocalSearchParams } from 'expo-router';
 import * as Crypto from 'expo-crypto';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function CreateWallet() {
+  const { kycVerified } = useLocalSearchParams();
+
   const handleCreateWallet = async () => {
     try {
       // Generate a random private key
@@ -37,6 +39,10 @@ export default function CreateWallet() {
     }
   };
 
+  const handleStartKYC = () => {
+    router.push('/kyc-verification');
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.contentContainer}>
@@ -50,9 +56,15 @@ export default function CreateWallet() {
       </View>
       
       <View style={styles.footer}>
-        <TouchableOpacity style={styles.button} onPress={handleCreateWallet}>
-          <Text style={styles.buttonText}>Create New Wallet</Text>
-        </TouchableOpacity>
+        {kycVerified === 'true' ? (
+          <TouchableOpacity style={styles.button} onPress={handleCreateWallet}>
+            <Text style={styles.buttonText}>Create New Wallet</Text>
+          </TouchableOpacity>
+        ) : (
+          <TouchableOpacity style={styles.button} onPress={handleStartKYC}>
+            <Text style={styles.buttonText}>Start KYC Verification</Text>
+          </TouchableOpacity>
+        )}
       </View>
     </View>
   );
