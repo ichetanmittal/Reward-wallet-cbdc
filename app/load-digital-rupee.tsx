@@ -6,7 +6,9 @@ import { useState, useRef, useEffect } from 'react';
 export default function LoadDigitalRupeeScreen() {
   const [amount, setAmount] = useState('0.00');
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [isUPIModalVisible, setIsUPIModalVisible] = useState(false);
   const slideAnim = useRef(new Animated.Value(0)).current;
+  const upiSlideAnim = useRef(new Animated.Value(0)).current;
 
   const handleClose = () => {
     router.back();
@@ -31,6 +33,27 @@ export default function LoadDigitalRupeeScreen() {
     });
   };
 
+  const showUPIModal = () => {
+    setIsModalVisible(false);
+    setIsUPIModalVisible(true);
+    Animated.timing(upiSlideAnim, {
+      toValue: 1,
+      duration: 300,
+      useNativeDriver: true,
+    }).start();
+  };
+
+  const closeUPIModal = () => {
+    Animated.timing(upiSlideAnim, {
+      toValue: 0,
+      duration: 300,
+      useNativeDriver: true,
+    }).start(() => {
+      setIsUPIModalVisible(false);
+      setIsModalVisible(true);
+    });
+  };
+
   const handleAmountChange = (text: string) => {
     // Only allow numbers and one decimal point
     const filtered = text.replace(/[^0-9.]/g, '');
@@ -41,9 +64,18 @@ export default function LoadDigitalRupeeScreen() {
   };
 
   const handlePaymentMethodSelect = (method: string) => {
-    console.log('Selected payment method:', method);
-    closeModal();
-    // TODO: Implement payment processing
+    if (method === 'UPI') {
+      showUPIModal();
+    } else {
+      console.log('Selected payment method:', method);
+      closeModal();
+    }
+  };
+
+  const handleUPIAppSelect = (app: string) => {
+    console.log('Selected UPI app:', app);
+    setIsUPIModalVisible(false);
+    // TODO: Implement UPI payment processing
   };
 
   return (
@@ -149,6 +181,85 @@ export default function LoadDigitalRupeeScreen() {
         </TouchableOpacity>
       </Modal>
 
+      {/* UPI Apps Modal */}
+      <Modal
+        visible={isUPIModalVisible}
+        transparent={true}
+        animationType="none"
+        onRequestClose={closeUPIModal}
+      >
+        <TouchableOpacity 
+          style={styles.modalOverlay} 
+          activeOpacity={1} 
+          onPress={closeUPIModal}
+        >
+          <Animated.View 
+            style={[
+              styles.modalContent,
+              {
+                transform: [{
+                  translateY: upiSlideAnim.interpolate({
+                    inputRange: [0, 1],
+                    outputRange: [600, 0]
+                  })
+                }]
+              }
+            ]}
+          >
+            <View style={styles.modalHeader}>
+              <TouchableOpacity 
+                style={styles.backButton}
+                onPress={closeUPIModal}
+              >
+                <Text style={styles.backButtonText}>←</Text>
+              </TouchableOpacity>
+              <View>
+                <Text style={styles.modalTitle}>Pay using UPI</Text>
+                <Text style={styles.modalSubtitle}>Choose your UPI app</Text>
+              </View>
+            </View>
+
+            <View style={styles.upiAppsContainer}>
+              {/* Google Pay */}
+              <TouchableOpacity 
+                style={styles.upiApp}
+                onPress={() => handleUPIAppSelect('GPAY')}
+              >
+                <Image 
+                  source={require('../assets/images/gpay.jpeg')} 
+                  style={styles.upiAppIcon}
+                />
+                <Text style={styles.upiAppText}>Google Pay</Text>
+              </TouchableOpacity>
+
+              {/* PhonePe */}
+              <TouchableOpacity 
+                style={styles.upiApp}
+                onPress={() => handleUPIAppSelect('PHONEPE')}
+              >
+                <Image 
+                  source={require('../assets/images/phonepe.png')} 
+                  style={styles.upiAppIcon}
+                />
+                <Text style={styles.upiAppText}>PhonePe</Text>
+              </TouchableOpacity>
+
+              {/* Paytm */}
+              <TouchableOpacity 
+                style={styles.upiApp}
+                onPress={() => handleUPIAppSelect('PAYTM')}
+              >
+                <Image 
+                  source={require('../assets/images/paytm.png')} 
+                  style={styles.upiAppIcon}
+                />
+                <Text style={styles.upiAppText}>Paytm</Text>
+              </TouchableOpacity>
+            </View>
+          </Animated.View>
+        </TouchableOpacity>
+      </Modal>
+
       <StatusBar style="light" />
     </View>
   );
@@ -176,6 +287,14 @@ const styles = StyleSheet.create({
     padding: 8,
   },
   closeButtonText: {
+    color: '#000000',
+    fontSize: 24,
+  },
+  backButton: {
+    padding: 8,
+    marginRight: 15,
+  },
+  backButtonText: {
     color: '#000000',
     fontSize: 24,
   },
@@ -245,6 +364,8 @@ const styles = StyleSheet.create({
     paddingBottom: 40,
   },
   modalHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
     paddingHorizontal: 20,
     marginBottom: 30,
   },
@@ -299,5 +420,25 @@ const styles = StyleSheet.create({
     color: '#000000',
     paddingHorizontal: 20,
     paddingVertical: 15,
+  },
+  upiAppsContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    paddingHorizontal: 20,
+    paddingTop: 20,
+  },
+  upiApp: {
+    alignItems: 'center',
+    width: '30%',
+  },
+  upiAppIcon: {
+    width: 60,
+    height: 60,
+    marginBottom: 8,
+  },
+  upiAppText: {
+    fontSize: 14,
+    color: '#000000',
+    textAlign: 'center',
   },
 }); 
