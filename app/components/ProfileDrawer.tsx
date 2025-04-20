@@ -75,16 +75,16 @@ export default function ProfileDrawer({ isVisible, onClose, privateKey, publicKe
           
           {/* QR Code Section */}
           <View style={styles.qrContainer}>
-            <Text style={styles.qrLabel}>Public Key QR Code</Text>
+            <Text style={styles.qrLabel}>E-Rupi Handle QR Code</Text>
             <View style={styles.qrCode}>
               <QRCode
-                value={publicKey || ''}
+                value={eRupiHandle || ''}
                 size={150}
                 backgroundColor="white"
                 color="black"
               />
             </View>
-            <Text style={styles.qrHint}>Scan to get the public key</Text>
+            <Text style={styles.qrHint}>Scan to get the E-Rupi handle</Text>
           </View>
         </View>
 
