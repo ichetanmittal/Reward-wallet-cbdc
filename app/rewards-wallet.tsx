@@ -34,8 +34,10 @@ export default function RewardsWalletScreen() {
             <Text style={[styles.viewWalletText, { color: '#2E7D32' }]}>View Rewards</Text>
           </TouchableOpacity>
         </View>
+      </View>
 
-        {/* Action Buttons */}
+      {/* Action Buttons */}
+      <View style={styles.actionButtonsContainer}>
         <View style={styles.actionButtons}>
           <TouchableOpacity style={[styles.actionButton, { backgroundColor: '#388E3C' }]}>
             <Image 
@@ -58,15 +60,9 @@ export default function RewardsWalletScreen() {
             />
             <Text style={styles.actionText}>History</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={[styles.actionButton, { backgroundColor: '#388E3C' }]}>
-            <Image 
-              source={require('../assets/images/Download.png')} 
-              style={styles.actionIcon}
-            />
-            <Text style={styles.actionText}>Partners</Text>
-          </TouchableOpacity>
         </View>
       </View>
+
       <StatusBar style="auto" />
     </View>
   );
@@ -118,6 +114,7 @@ const styles = StyleSheet.create({
   },
   card: {
     margin: 20,
+    height: 150,
     borderRadius: 20,
     padding: 20,
     elevation: 5,
@@ -151,10 +148,13 @@ const styles = StyleSheet.create({
   viewWalletText: {
     fontWeight: '600',
   },
+  actionButtonsContainer: {
+    paddingHorizontal: 20,
+    marginTop: 20,
+  },
   actionButtons: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginTop: 20,
   },
   actionButton: {
     alignItems: 'center',
