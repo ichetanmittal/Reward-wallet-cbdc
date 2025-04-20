@@ -85,7 +85,9 @@ export default function WalletScreen() {
             />
             <Text style={styles.actionText}>Send</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={[styles.actionButton, { backgroundColor: '#E67E22' }]}>
+          <TouchableOpacity style={[styles.actionButton, { backgroundColor: '#E67E22' }]}
+            onPress={() => router.push('/collect')}
+          >
             <Image 
               source={require('../assets/images/Download.png')} 
               style={styles.actionIcon}
