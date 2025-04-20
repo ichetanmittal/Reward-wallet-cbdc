@@ -1,23 +1,34 @@
-import { View, Text, StyleSheet, TouchableOpacity, TextInput } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, TextInput, Modal, Image, Animated } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { router } from 'expo-router';
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 
 export default function LoadDigitalRupeeScreen() {
   const [amount, setAmount] = useState('0.00');
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const slideAnim = useRef(new Animated.Value(0)).current;
 
   const handleClose = () => {
     router.back();
   };
 
   const handleLoad = () => {
-    // TODO: Implement loading functionality
-    console.log('Loading digital rupee...', amount);
+    setIsModalVisible(true);
+    Animated.timing(slideAnim, {
+      toValue: 1,
+      duration: 300,
+      useNativeDriver: true,
+    }).start();
   };
 
-  const handleSelectDenomination = () => {
-    // TODO: Implement denomination selection
-    console.log('Select denomination...');
+  const closeModal = () => {
+    Animated.timing(slideAnim, {
+      toValue: 0,
+      duration: 300,
+      useNativeDriver: true,
+    }).start(() => {
+      setIsModalVisible(false);
+    });
   };
 
   const handleAmountChange = (text: string) => {
@@ -27,6 +38,12 @@ export default function LoadDigitalRupeeScreen() {
     if (parts.length > 2) return; // Don't allow multiple decimal points
     if (parts[1]?.length > 2) return; // Don't allow more than 2 decimal places
     setAmount(filtered);
+  };
+
+  const handlePaymentMethodSelect = (method: string) => {
+    console.log('Selected payment method:', method);
+    closeModal();
+    // TODO: Implement payment processing
   };
 
   return (
@@ -64,16 +81,73 @@ export default function LoadDigitalRupeeScreen() {
 
       <Text style={styles.denominationText}>Denomination will be auto selected</Text>
 
-      {/* <View style={styles.dividerContainer}>
-        <View style={styles.divider} />
-        <Text style={styles.orText}>OR</Text>
-        <View style={styles.divider} />
-      </View> */}
+      {/* Payment Method Modal */}
+      <Modal
+        visible={isModalVisible}
+        transparent={true}
+        animationType="none"
+        onRequestClose={closeModal}
+      >
+        <TouchableOpacity 
+          style={styles.modalOverlay} 
+          activeOpacity={1} 
+          onPress={closeModal}
+        >
+          <Animated.View 
+            style={[
+              styles.modalContent,
+              {
+                transform: [{
+                  translateY: slideAnim.interpolate({
+                    inputRange: [0, 1],
+                    outputRange: [600, 0]
+                  })
+                }]
+              }
+            ]}
+          >
+            <View style={styles.modalHeader}>
+              <Text style={styles.modalTitle}>Select Payment Method</Text>
+              <Text style={styles.modalSubtitle}>To load (add) e₹ into your wallet</Text>
+            </View>
 
-      {/* <TouchableOpacity style={styles.selectButton} onPress={handleSelectDenomination}>
-        <Text style={styles.selectButtonText}>Select denomination manually</Text>
-        <Text style={styles.arrowIcon}>›</Text>
-      </TouchableOpacity> */}
+            {/* UPI Option */}
+            <TouchableOpacity 
+              style={styles.paymentOption}
+              onPress={() => handlePaymentMethodSelect('UPI')}
+            >
+              <View style={styles.paymentOptionLeft}>
+                <Image 
+                  source={require('../assets/images/upi.png')} 
+                  style={styles.paymentIcon}
+                />
+                <Text style={styles.paymentText}>UPI</Text>
+              </View>
+              <View style={styles.radioButton} />
+            </TouchableOpacity>
+
+            <Text style={styles.otherMethodsTitle}>Other Payment Method</Text>
+
+            {/* Bank Account Option */}
+            <TouchableOpacity 
+              style={styles.paymentOption}
+              onPress={() => handlePaymentMethodSelect('BANK')}
+            >
+              <View style={styles.paymentOptionLeft}>
+                <Image 
+                  source={require('../assets/images/bob.png')} 
+                  style={styles.paymentIcon}
+                />
+                <View>
+                  <Text style={styles.paymentText}>BOB</Text>
+                  <Text style={styles.accountText}>Savings A/c: XXXXXXXXXX...</Text>
+                </View>
+              </View>
+              <View style={styles.radioButton} />
+            </TouchableOpacity>
+          </Animated.View>
+        </TouchableOpacity>
+      </Modal>
 
       <StatusBar style="light" />
     </View>
@@ -158,39 +232,72 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginBottom: 40,
   },
-  dividerContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingHorizontal: 20,
-    marginBottom: 40,
-  },
-  divider: {
+  modalOverlay: {
     flex: 1,
-    height: 1,
-    backgroundColor: '#CCCCCC',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    justifyContent: 'flex-end',
   },
-  orText: {
-    color: '#666666',
+  modalContent: {
+    backgroundColor: 'white',
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    paddingTop: 20,
+    paddingBottom: 40,
+  },
+  modalHeader: {
     paddingHorizontal: 20,
+    marginBottom: 30,
   },
-  selectButton: {
+  modalTitle: {
+    fontSize: 24,
+    fontWeight: '600',
+    color: '#000000',
+    marginBottom: 8,
+  },
+  modalSubtitle: {
+    fontSize: 16,
+    color: '#666666',
+  },
+  paymentOption: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
+    paddingVertical: 15,
     paddingHorizontal: 20,
-    paddingVertical: 16,
-    borderWidth: 1,
-    borderColor: '#4C6FFF',
-    marginHorizontal: 20,
-    borderRadius: 12,
+    borderBottomWidth: 1,
+    borderBottomColor: '#F0F0F0',
   },
-  selectButtonText: {
-    color: '#4C6FFF',
+  paymentOptionLeft: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  paymentIcon: {
+    width: 40,
+    height: 40,
+    marginRight: 15,
+  },
+  paymentText: {
     fontSize: 16,
+    color: '#000000',
     fontWeight: '500',
   },
-  arrowIcon: {
-    color: '#4C6FFF',
-    fontSize: 24,
+  accountText: {
+    fontSize: 14,
+    color: '#666666',
+    marginTop: 2,
+  },
+  radioButton: {
+    width: 24,
+    height: 24,
+    borderRadius: 12,
+    borderWidth: 2,
+    borderColor: '#CCCCCC',
+  },
+  otherMethodsTitle: {
+    fontSize: 18,
+    fontWeight: '600',
+    color: '#000000',
+    paddingHorizontal: 20,
+    paddingVertical: 15,
   },
 }); 
