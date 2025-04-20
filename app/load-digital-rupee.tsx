@@ -138,7 +138,7 @@ export default function LoadDigitalRupeeScreen() {
               }
             ]}
           >
-            <View style={styles.modalHeader}>
+            <View style={styles.paymentModalHeader}>
               <Text style={styles.modalTitle}>Select Payment Method</Text>
               <Text style={styles.modalSubtitle}>To load (add) e₹ into your wallet</Text>
             </View>
@@ -206,18 +206,17 @@ export default function LoadDigitalRupeeScreen() {
               }
             ]}
           >
-            <View style={styles.modalHeader}>
+            <View style={styles.upiModalHeader}>
               <TouchableOpacity 
                 style={styles.backButton}
                 onPress={closeUPIModal}
               >
                 <Text style={styles.backButtonText}>←</Text>
               </TouchableOpacity>
-              <View>
-                <Text style={styles.modalTitle}>Pay using UPI</Text>
-                <Text style={styles.modalSubtitle}>Choose your UPI app</Text>
-              </View>
+              <Text style={styles.modalTitle}>Pay using UPI</Text>
             </View>
+
+            <Text style={styles.upiModalSubtitle}>Choose your UPI app</Text>
 
             <View style={styles.upiAppsContainer}>
               {/* Google Pay */}
@@ -363,9 +362,7 @@ const styles = StyleSheet.create({
     paddingTop: 20,
     paddingBottom: 40,
   },
-  modalHeader: {
-    flexDirection: 'row',
-    alignItems: 'center',
+  paymentModalHeader: {
     paddingHorizontal: 20,
     marginBottom: 30,
   },
@@ -373,11 +370,11 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: '600',
     color: '#000000',
-    marginBottom: 8,
   },
   modalSubtitle: {
     fontSize: 16,
     color: '#666666',
+    marginTop: 8,
   },
   paymentOption: {
     flexDirection: 'row',
@@ -440,5 +437,17 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#000000',
     textAlign: 'center',
+  },
+  upiModalHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 20,
+    marginBottom: 15,
+  },
+  upiModalSubtitle: {
+    fontSize: 16,
+    color: '#666666',
+    paddingHorizontal: 20,
+    marginBottom: 20,
   },
 }); 
