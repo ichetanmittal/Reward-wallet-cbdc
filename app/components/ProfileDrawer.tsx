@@ -76,14 +76,20 @@ export default function ProfileDrawer({ isVisible, onClose, privateKey, publicKe
           {/* QR Code Section */}
           <View style={styles.qrContainer}>
             <Text style={styles.qrLabel}>E-Rupi Handle QR Code</Text>
-            <View style={styles.qrCode}>
-              <QRCode
-                value={eRupiHandle || ''}
-                size={150}
-                backgroundColor="white"
-                color="black"
-              />
-            </View>
+            {eRupiHandle ? (
+              <View style={styles.qrCode}>
+                <QRCode
+                  value={eRupiHandle}
+                  size={150}
+                  backgroundColor="white"
+                  color="black"
+                />
+              </View>
+            ) : (
+              <View style={[styles.qrCode, { justifyContent: 'center', alignItems: 'center' }]}>
+                <Text style={styles.qrHint}>Loading QR Code...</Text>
+              </View>
+            )}
             <Text style={styles.qrHint}>Scan to get the E-Rupi handle</Text>
           </View>
         </View>
