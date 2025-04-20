@@ -102,13 +102,13 @@ export default function WalletScreen() {
             />
             <Text style={styles.actionText}>Load</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={[styles.actionButton, { backgroundColor: '#E67E22' }]}>
+          {/* <TouchableOpacity style={[styles.actionButton, { backgroundColor: '#E67E22' }]}>
             <Image 
               source={require('../assets/images/Download.png')} 
               style={styles.actionIcon}
             />
             <Text style={styles.actionText}>Redeem</Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </View>
       </View>
 

@@ -37,7 +37,7 @@ export default function RewardsWalletScreen() {
       </View>
 
       {/* Action Buttons */}
-      <View style={styles.actionButtonsContainer}>
+      {/* <View style={styles.actionButtonsContainer}>
         <View style={styles.actionButtons}>
           <TouchableOpacity style={[styles.actionButton, { backgroundColor: '#388E3C' }]}>
             <Image 
@@ -61,7 +61,7 @@ export default function RewardsWalletScreen() {
             <Text style={styles.actionText}>History</Text>
           </TouchableOpacity>
         </View>
-      </View>
+      </View> */}
 
       <StatusBar style="auto" />
     </View>
