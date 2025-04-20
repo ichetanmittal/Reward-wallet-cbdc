@@ -2,6 +2,7 @@ import { View, Text, StyleSheet, TouchableOpacity, Image, Dimensions } from 'rea
 import { router } from 'expo-router';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import QRCode from 'react-native-qrcode-svg';
+import { useEffect, useState } from 'react';
 
 const { width } = Dimensions.get('window');
 
@@ -13,12 +14,32 @@ interface ProfileDrawerProps {
 }
 
 export default function ProfileDrawer({ isVisible, onClose, privateKey, publicKey }: ProfileDrawerProps) {
+  const [eRupiHandle, setERupiHandle] = useState<string>('');
+
+  useEffect(() => {
+    const loadPhoneNumber = async () => {
+      try {
+        const phoneNumber = await AsyncStorage.getItem('phoneNumber');
+        if (phoneNumber) {
+          setERupiHandle(`${phoneNumber}@drbob`);
+        }
+      } catch (error) {
+        console.error('Error loading phone number:', error);
+      }
+    };
+    
+    if (isVisible) {
+      loadPhoneNumber();
+    }
+  }, [isVisible]);
+
   const handleDeregisterWallet = async () => {
     try {
       // Clear wallet data
       await AsyncStorage.removeItem('walletExists');
       await AsyncStorage.removeItem('privateKey');
       await AsyncStorage.removeItem('publicKey');
+      await AsyncStorage.removeItem('phoneNumber'); // Also clear phone number
       
       // Navigate back to index
       router.replace('/');
@@ -49,7 +70,8 @@ export default function ProfileDrawer({ isVisible, onClose, privateKey, publicKe
             source={require('../../assets/images/person.png')} 
             style={styles.profileIcon}
           />
-          <Text style={styles.userName}>Chetan Mittal</Text>
+          <Text style={styles.userName}>{eRupiHandle || 'Loading...'}</Text>
+          <Text style={styles.userSubtitle}>Your E-Rupi Handle</Text>
           
           {/* QR Code Section */}
           <View style={styles.qrContainer}>
@@ -134,9 +156,14 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   userName: {
-    fontSize: 20,
+    fontSize: 18,
     fontWeight: 'bold',
     color: '#333',
+    marginBottom: 4,
+  },
+  userSubtitle: {
+    fontSize: 14,
+    color: '#666',
     marginBottom: 20,
   },
   qrContainer: {
