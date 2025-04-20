@@ -12,6 +12,10 @@ export default function WalletScreen() {
     router.push('/rewards-wallet');
   };
 
+  const handleLoadDigitalRupee = () => {
+    router.push('/load-digital-rupee');
+  };
+
   return (
     <View style={styles.container}>
       {/* Header */}
@@ -88,7 +92,10 @@ export default function WalletScreen() {
             />
             <Text style={styles.actionText}>Collect</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={[styles.actionButton, { backgroundColor: '#E67E22' }]}>
+          <TouchableOpacity 
+            style={[styles.actionButton, { backgroundColor: '#E67E22' }]}
+            onPress={handleLoadDigitalRupee}
+          >
             <Image 
               source={require('../assets/images/Creditcard.png')} 
               style={styles.actionIcon}
